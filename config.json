@@ -1,0 +1,11 @@
+{
+  "port": 8080,
+  "algorithm": "round_robin",
+  "health_interval": 5,
+  "health_timeout": 2,
+  "backends": [
+    { "host": "127.0.0.1", "port": 9001 },
+    { "host": "127.0.0.1", "port": 9002 },
+    { "host": "127.0.0.1", "port": 9003 }
+  ]
+}

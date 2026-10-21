@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  backend1:
+    build:
+      context: ./backend
+      args:
+        BACKEND_PORT: 9001
+    container_name: backend1
+    environment:
+      - BACKEND_PORT=9001
+    ports:
+      - "9001:9001"
+    networks:
+      - lb_network
+    restart: unless-stopped
+
+  backend2:
+    build:
+      context: ./backend
+      args:
+        BACKEND_PORT: 9002
+    container_name: backend2
+    environment:
+      - BACKEND_PORT=9002
+    ports:
+      - "9002:9002"
+    networks:
+      - lb_network
+    restart: unless-stopped
+
+  backend3:
+    build:
+      context: ./backend
+      args:
+        BACKEND_PORT: 9003
+    container_name: backend3
+    environment:
+      - BACKEND_PORT=9003
+    ports:
+      - "9003:9003"
+    networks:
+      - lb_network
+    restart: unless-stopped
+
+  load_balancer:
+    build:
+      context: .
+    container_name: load_balancer
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config.docker.json:/app/config.json:ro
+    depends_on:
+      - backend1
+      - backend2
+      - backend3
+    networks:
+      - lb_network
+    restart: unless-stopped
+
+networks:
+  lb_network:
+    driver: bridge
